@@ -1,4 +1,5 @@
 """View module for handling requests about categories"""
+from django.db import IntegrityError
 from django.forms import ValidationError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
@@ -15,7 +16,7 @@ class CategoryView(ViewSet):
             Response -- JSON serialized category
         """
         category = Category.objects.get(pk=pk)
-        serializer=CreateCategorySerializer(category)
+        serializer=CategorySerializer(category)
         return Response(serializer.data)
     
     def list(self, request):
@@ -35,7 +36,7 @@ class CategoryView(ViewSet):
             Response -- JSON serialized category instance
         """
         try:
-            serializer = CreateCategorySerializer(data=request.data)
+            serializer = CategorySerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -49,7 +50,7 @@ class CategoryView(ViewSet):
         """
         try:
             category = Category.objects.get(pk=pk)
-            serializer = CreateCategorySerializer(category, data=request.data)
+            serializer = CategorySerializer(category, data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(None, status=status.HTTP_204_NO_CONTENT)
@@ -60,20 +61,20 @@ class CategoryView(ViewSet):
         """Handle DELETE requests for category
 
         Returns:
-            Respons -- empty body with 204 status code
+            Response -- empty body with 204 status code
         """
-        category = Category.objects.get(pk=pk)
-        category.delete()
-        return Response(None, status=status.HTTP_204_NO_CONTENT)
-    
+        # category = Category.objects.get(pk=pk)
+        # category.delete()
+        # return Response(None, status=status.HTTP_204_NO_CONTENT)
+        try:
+            category = Category.objects.get(pk=pk)
+            category.delete()
+            return Response(None, status=status.HTTP_204_NO_CONTENT)
+        except Category.DoesNotExist as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+        except IntegrityError as ix:
+            return Response({'message': ix.args[0]}, status=status.HTTP_304_NOT_MODIFIED)
 
-
-class CreateCategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = "__all__"
-        
-    
 class CategorySerializer(serializers.ModelSerializer):
     """JSON serializer for game types
     """
