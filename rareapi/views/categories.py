@@ -71,7 +71,7 @@ class CategoryView(ViewSet):
 class CreateCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id', 'label']
+        fields = "__all__"
         
     
 class CategorySerializer(serializers.ModelSerializer):
@@ -79,4 +79,4 @@ class CategorySerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Category
-        fields = ('label', )
+        fields = "__all__"
