@@ -1,0 +1,9 @@
+[
+    {
+        "model": "rareapi.tag",
+        "pk":  1,
+        "fields":{
+            "label": "I AM THE HYPE"
+        }
+    }
+]

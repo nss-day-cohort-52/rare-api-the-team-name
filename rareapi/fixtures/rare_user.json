@@ -1,0 +1,11 @@
+[
+    {
+        "model": "rareapi.rareuser",
+        "pk": 1,
+        "fields":{
+            "user": 1,
+            "bio": "I am a user.",
+            "profile_image_url": "https://media.altpress.com/uploads/2018/07/its_always_sunny_charlie.jpg"
+        }
+    }
+]
