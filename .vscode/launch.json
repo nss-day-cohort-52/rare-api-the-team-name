@@ -5,7 +5,7 @@
             "name": "Python: Django",
             "type": "python",
             "request": "launch",
-            "program": "rare-api-the-team-name/manage.py",
+            "program": "./manage.py",
             "args": ["runserver"],
             "django": true,
             "autoReload":{
