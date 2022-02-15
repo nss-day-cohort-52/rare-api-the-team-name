@@ -19,7 +19,6 @@ from django.urls import path
 from rest_framework import routers
 
 
-
 from rareapi.views import (CategoryView, PostView, RareUserView, CommentView, login_user,
                            register_user)
 
