@@ -62,6 +62,26 @@ class RareUserView(ViewSet):
         # could also do: FavoriteRestaurant.objects.create()
         return Response({'message': 'Subscription deleted'}, status=status.HTTP_204_NO_CONTENT)
 
+    @action(methods=['put'], detail=True)
+    def admin(self, request, pk):
+        """Put request to is_staff"""
+
+        user = User.objects.get(pk=pk)
+        user.is_staff = True
+        user.save()
+
+        return Response({'message': 'User is now an admin'}, status=status.HTTP_204_NO_CONTENT)
+
+    @action(methods=['put'], detail=True)
+    def author(self, request, pk):
+        """Put request to is_staff"""
+
+        user = User.objects.get(pk=pk)
+        user.is_staff = False
+        user.save()
+
+        return Response({'message': 'User is now an author'}, status=status.HTTP_204_NO_CONTENT)
+
 
 class UserSerializer(serializers.ModelSerializer):
     """JSON serializer for user types
