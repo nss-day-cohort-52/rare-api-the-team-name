@@ -16,20 +16,21 @@ Including another URLconf
 from django.conf.urls import include
 from django.contrib import admin
 from django.urls import path
-from rareapi.views import (CategoryView, PostView, RareUserView, TagView, login_user,
-                           register_user)
 from rest_framework import routers
+from rareapi.views import (CategoryView, PostView, RareUserView, CommentView, TagView, login_user,
+                           register_user)
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'users', RareUserView, 'rare user')
 router.register(r'categories', CategoryView, 'category')
 router.register(r'posts', PostView, 'post')
 router.register(r'tags', TagView, 'tag')
+router.register(r'comments', CommentView, 'comment')
 
 urlpatterns = [
     path('register', register_user),
     path('login', login_user),
     path('api-auth', include('rest_framework.urls', namespace='rest_framework')),
     path('admin/', admin.site.urls),
-    path('', include(router.urls)),
+    path('', include(router.urls))
 ]
