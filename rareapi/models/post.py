@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Post(models.Model):
     user = models.ForeignKey("RareUser", on_delete=models.CASCADE)
     category = models.ForeignKey("Category", on_delete=models.DO_NOTHING)
