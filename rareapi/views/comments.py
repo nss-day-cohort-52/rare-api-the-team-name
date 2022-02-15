@@ -6,7 +6,7 @@ from rareapi.models import Comment
 class CommentView(ViewSet):
     def list (self, request):
         """handles the GET all for comments"""
-        comments = Comment.objects.all()
+        comments = Comment.objects.order_by('-created_on')
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
     
