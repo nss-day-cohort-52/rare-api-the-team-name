@@ -16,9 +16,9 @@ Including another URLconf
 from django.conf.urls import include
 from django.contrib import admin
 from django.urls import path
+from rareapi.views import (CategoryView, CommentView, PostView, RareUserView,
+                           TagView, login_user, register_user)
 from rest_framework import routers
-from rareapi.views import (CategoryView, PostView, RareUserView, CommentView, TagView, login_user,
-                           register_user)
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'users', RareUserView, 'rare user')

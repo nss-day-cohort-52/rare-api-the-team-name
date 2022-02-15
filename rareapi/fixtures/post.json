@@ -11,6 +11,57 @@
             "image_url": "https://www.newsinlevels.com/wp-content/uploads/2022/01/Depositphotos_3196834_S-200x100.jpg?ezimgfmt=ng:webp/ngcb1",
             "approved": true
         }
-
+    },
+    {
+        "model": "rareapi.post",
+        "pk": 2,
+        "fields":{
+            "user": 2,
+            "category": 1,
+            "title": "Man gives food to dogs",
+            "content": "A man from Jordan loves animals a lot. He helps street dogs. He gives them food every day. Morshed spends around 1,400 dollars on food for dogs every month. He buys meat. He vaccinates the dogs. It helps them stay healthy.There are many street dogs in Jordan. They are often sick. Most people do not like these dogs. Morshed starts to feed the dogs seven years ago. He makes videos of them. He puts the videos on Tik Tok. Morshed wants to show that dogs are very friendly animals. Morshed believes that people will change their opinion about the dogs. Maybe other people will give food to them, too.",
+            "publication_date": "2021-01-15",
+            "image_url": "https://www.newsinlevels.com/wp-content/uploads/2022/01/Depositphotos_6478639_S-200x100.jpg?ezimgfmt=ng:webp/ngcb1",
+            "approved": true
+        }
+    },
+    {
+        "model": "rareapi.post",
+        "pk": 3,
+        "fields":{
+            "user": 2,
+            "category": 1,
+            "title": "Blah bloo blah",
+            "content": "A man from Jordan loves animals a lot. He helps street dogs. He gives them food every day. Morshed spends around 1,400 dollars on food for dogs every month. He buys meat. He vaccinates the dogs. It helps them stay healthy.There are many street dogs in Jordan. They are often sick. Most people do not like these dogs. Morshed starts to feed the dogs seven years ago. He makes videos of them. He puts the videos on Tik Tok. Morshed wants to show that dogs are very friendly animals. Morshed believes that people will change their opinion about the dogs. Maybe other people will give food to them, too.",
+            "publication_date": "2021-01-15",
+            "image_url": "https://www.newsinlevels.com/wp-content/uploads/2022/01/Depositphotos_6478639_S-200x100.jpg?ezimgfmt=ng:webp/ngcb1",
+            "approved": true
+        }
+    },
+    {
+        "model": "rareapi.post",
+        "pk": 4,
+        "fields":{
+            "user": 3,
+            "category": 1,
+            "title": "Test test test",
+            "content": "A man from Jordan loves animals a lot. He helps street dogs. He gives them food every day. Morshed spends around 1,400 dollars on food for dogs every month. He buys meat. He vaccinates the dogs. It helps them stay healthy.There are many street dogs in Jordan. They are often sick. Most people do not like these dogs. Morshed starts to feed the dogs seven years ago. He makes videos of them. He puts the videos on Tik Tok. Morshed wants to show that dogs are very friendly animals. Morshed believes that people will change their opinion about the dogs. Maybe other people will give food to them, too.",
+            "publication_date": "2021-01-15",
+            "image_url": "https://www.newsinlevels.com/wp-content/uploads/2022/01/Depositphotos_6478639_S-200x100.jpg?ezimgfmt=ng:webp/ngcb1",
+            "approved": true
+        }
+    },
+    {
+        "model": "rareapi.post",
+        "pk": 5,
+        "fields":{
+            "user": 3,
+            "category": 1,
+            "title": "addfhsfddgdFSADFH",
+            "content": "A man from Jordan loves animals a lot. He helps street dogs. He gives them food every day. Morshed spends around 1,400 dollars on food for dogs every month. He buys meat. He vaccinates the dogs. It helps them stay healthy.There are many street dogs in Jordan. They are often sick. Most people do not like these dogs. Morshed starts to feed the dogs seven years ago. He makes videos of them. He puts the videos on Tik Tok. Morshed wants to show that dogs are very friendly animals. Morshed believes that people will change their opinion about the dogs. Maybe other people will give food to them, too.",
+            "publication_date": "2021-01-15",
+            "image_url": "https://www.newsinlevels.com/wp-content/uploads/2022/01/Depositphotos_6478639_S-200x100.jpg?ezimgfmt=ng:webp/ngcb1",
+            "approved": true
+        }
     }
 ]
