@@ -1,11 +1,10 @@
 from django.forms import ValidationError
-from django.http import HttpResponseServerError
-from rest_framework.viewsets import ViewSet
-from rest_framework.response import Response
+from rareapi.models import Post, RareUser
+from rareapi.views.rare_user import RareUserSerializer
 from rest_framework import serializers, status
 from rest_framework.decorators import action
-from django.db.models import Count, Q
-from rareapi.models import Post, RareUser, Subscription
+from rest_framework.response import Response
+from rest_framework.viewsets import ViewSet
 
 
 class PostView(ViewSet):
@@ -55,19 +54,14 @@ class PostView(ViewSet):
         """Only get posts whose authors are associated with the current user's subscriptions"""
 
         rare_user = RareUser.objects.get(pk=request.auth.user.id)
-        user_subscriptions = Subscription.objects.filter(
-            follower=rare_user).values()
-        
-        post_list = []
-        
-        for subscription in user_subscriptions:
-            posts = Post.objects.filter(user__pk=subscription['author_id']).values()
-            new_posts = PostSerializer(posts, many=True)
-            post_list.append(new_posts.data)
-            
-        flat_list = [item for sublist in post_list for item in sublist]
 
-        return Response(flat_list)
+        follower = RareUserSerializer(rare_user)
+
+        posts = Post.objects.filter(
+            user__pk__in=follower.data['following'])
+        
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data)
 
 
 class PostSerializer(serializers.ModelSerializer):
