@@ -20,7 +20,7 @@ class RareUserView(ViewSet):
         users = RareUser.objects.all()
         serializer = RareUserSerializer(users, many=True)
         return Response(serializer.data)
-    
+
     def retrieve(self, request, pk):
         """Handle GET requests for single user
 
@@ -43,6 +43,25 @@ class RareUserView(ViewSet):
         serializer = RareUserSerializer(rare_user)
         return Response(serializer.data)
 
+    @action(methods=['post'], detail=True)
+    def subscribe(self, request, pk):
+        """Post subscription"""
+
+        follower = RareUser.objects.get(pk=request.auth.user.id)
+        author = RareUser.objects.get(pk=pk)
+        follower.following.add(author)
+        return Response({'message': 'Subscription added'}, status=status.HTTP_201_CREATED)
+
+    @action(methods=['delete'], detail=True)
+    def unsubscribe(self, request, pk):
+        """Delete subscription"""
+
+        follower = RareUser.objects.get(pk=request.auth.user.id)
+        author = RareUser.objects.get(pk=pk)
+        follower.following.remove(author)
+        # could also do: FavoriteRestaurant.objects.create()
+        return Response({'message': 'Subscription deleted'}, status=status.HTTP_204_NO_CONTENT)
+
 
 class UserSerializer(serializers.ModelSerializer):
     """JSON serializer for user types
@@ -61,4 +80,4 @@ class RareUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RareUser
-        fields = 'id', 'bio', 'profile_image_url', 'user', 'following'
+        fields = 'id', 'bio', 'profile_image_url', 'user', 'following', 'followers'
