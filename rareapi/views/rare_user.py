@@ -76,11 +76,17 @@ class RareUserView(ViewSet):
     def author(self, request, pk):
         """Put request to is_staff"""
 
-        user = User.objects.get(pk=pk)
-        user.is_staff = False
-        user.save()
+        admin_count = User.objects.count(is_admin= True)
 
-        return Response({'message': 'User is now an author'}, status=status.HTTP_204_NO_CONTENT)
+        if admin_count != 1:
+                
+            user = User.objects.get(pk=pk)
+            user.is_staff = False
+            user.save()
+
+            return Response({'message': 'User is now an author'}, status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response({'message': 'Cannot be changed- this is the only admin remaining'}, status=status.HTTP_304_NOT_MODIFIED)
 
 
 class UserSerializer(serializers.ModelSerializer):
