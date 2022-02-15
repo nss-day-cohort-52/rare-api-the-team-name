@@ -19,9 +19,18 @@ class PostView(ViewSet):
 
     def list(self, request):
         posts = Post.objects.order_by('-publication_date')
-        category = request.query_params.get('category', None)
+        category = request.query_params.get('category_id', None)
+        author = request.query_params.get('user_id', None)
+        tag = request.query_params.get('tag_id', None)
+        title = request.query_params.get('q', None)
+        if title is not None:
+            posts = posts.filter(title__icontains=f"{title}")
         if category is not None:
             posts = posts.filter(category_id=category)
+        if author is not None:
+            posts = posts.filter(user_id=author)
+        if tag is not None:
+            posts = posts.filter(tags=tag)
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
