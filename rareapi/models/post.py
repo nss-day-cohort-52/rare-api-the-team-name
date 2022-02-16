@@ -8,5 +8,5 @@ class Post(models.Model):
     publication_date = models.DateField(auto_now_add=True)
     image_url = models.URLField()
     content = models.TextField()
-    approved = models.BooleanField()
+    approved = models.BooleanField(default=False)
     tags = models.ManyToManyField("Tag", through="PostTag", related_name="tags")

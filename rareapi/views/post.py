@@ -1,6 +1,8 @@
+import re
 from django.db.models import Count, Q
 from django.forms import ValidationError
 from rareapi.models import Post, RareUser
+from django.contrib.auth.models import User
 from rareapi.views.rare_user import RareUserSerializer
 from rest_framework import serializers, status
 from rest_framework.decorators import action
@@ -23,6 +25,7 @@ class PostView(ViewSet):
         author = request.query_params.get('user_id', None)
         tag = request.query_params.get('tag_id', None)
         title = request.query_params.get('q', None)
+        approved = request.query_params.get('approved', None)
         if title is not None:
             posts = posts.filter(title__icontains=f"{title}")
         if category is not None:
@@ -31,6 +34,8 @@ class PostView(ViewSet):
             posts = posts.filter(user_id=author)
         if tag is not None:
             posts = posts.filter(tags=tag)
+        if approved is not None:
+            posts = posts.filter(approved=True)
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
@@ -40,6 +45,8 @@ class PostView(ViewSet):
             serializer = CreatePostSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             post = serializer.save(user=user)
+            if request.auth.user.is_staff == 1:
+                post = serializer.save(approved=True)
             post.tags.set(request.data["tags"])
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         except ValidationError as ex:
@@ -75,6 +82,19 @@ class PostView(ViewSet):
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
+    @action(methods=['put'], detail=True)
+    def approve(self, request, pk):
+        post = Post.objects.get(pk=pk)
+        post.approved = True
+        post.save()
+        return Response({'message': 'Post has been approved by admin'}, status=status.HTTP_204_NO_CONTENT)
+    
+    @action(methods=['put'], detail=True)
+    def unapprove(self, request, pk):
+        post = Post.objects.get(pk=pk)
+        post.approved = False
+        post.save()
+        return Response({'message': 'Post has been unapproved by admin'}, status=status.HTTP_204_NO_CONTENT)
 
 class PostSerializer(serializers.ModelSerializer):
     # event_count = serializers.IntegerField(default=None)
@@ -87,4 +107,4 @@ class PostSerializer(serializers.ModelSerializer):
 class CreatePostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ['title', 'publication_date', 'image_url', 'content', 'approved', 'tags', 'category']
+        fields = ['title', 'publication_date', 'image_url', 'content', 'tags', 'category']
