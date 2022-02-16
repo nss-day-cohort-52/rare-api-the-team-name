@@ -59,7 +59,7 @@ class RareUserView(ViewSet):
         follower = RareUser.objects.get(pk=request.auth.user.id)
         author = RareUser.objects.get(pk=pk)
         follower.following.remove(author)
-        # could also do: FavoriteRestaurant.objects.create()
+
         return Response({'message': 'Subscription deleted'}, status=status.HTTP_204_NO_CONTENT)
 
     @action(methods=['put'], detail=True)
@@ -76,17 +76,41 @@ class RareUserView(ViewSet):
     def author(self, request, pk):
         """Put request to is_staff"""
 
-        # admin_count = User.objects.count(is_admin= True)
-
-        # if admin_count != 1:
-                
         user = User.objects.get(pk=pk)
-        user.is_staff = False
+        admin_list = User.objects.filter(is_staff=True, is_active=True)
+        serialized = UserSerializer(admin_list, many=True)
+
+        if len(serialized.data) <= 1 and user.is_staff is True:
+            return Response({'message': 'Cannot be changed- this is the only active admin remaining'}, status=status.HTTP_409_CONFLICT)
+        else:
+            user.is_staff = False
+            user.save()
+            return Response({'message': 'User is now an author'}, status=status.HTTP_204_NO_CONTENT)
+
+    @action(methods=['put'], detail=True)
+    def activate(self, request, pk):
+        """Put request to active"""
+
+        user = RareUser.objects.get(pk=pk)
+        user.active = True
         user.save()
 
-        return Response({'message': 'User is now an author'}, status=status.HTTP_204_NO_CONTENT)
-        # else:
-        #     return Response({'message': 'Cannot be changed- this is the only admin remaining'}, status=status.HTTP_304_NOT_MODIFIED)
+        return Response({'message': 'User has been activated'}, status=status.HTTP_204_NO_CONTENT)
+
+    @action(methods=['put'], detail=True)
+    def deactivate(self, request, pk):
+        """Put request to active"""
+
+        user = RareUser.objects.get(pk=pk)
+        admin_list = RareUser.objects.filter(user__is_staff=True, active=True)
+        serialized = RareUserSerializer(admin_list, many=True)
+
+        if len(serialized.data) <= 1 and user.user.is_staff is True:
+            return Response({'message': 'Cannot be changed- this is the only active admin remaining'}, status=status.HTTP_409_CONFLICT)
+        else:
+            user.active = False
+            user.save()
+            return Response({'message': 'User has been deactivated'}, status=status.HTTP_204_NO_CONTENT)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -95,7 +119,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         depth = 1
-        fields = 'id', 'username', 'first_name', 'last_name', 'email', 'is_staff', 'is_active', 'date_joined'
+        fields = 'id', 'username', 'first_name', 'last_name', 'email', 'is_staff', 'date_joined'
 
 
 class RareUserSerializer(serializers.ModelSerializer):
@@ -106,4 +130,4 @@ class RareUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RareUser
-        fields = 'id', 'bio', 'profile_image_url', 'user', 'following', 'followers'
+        fields = 'id', 'bio', 'profile_image_url', 'user', 'following', 'followers', 'active'
