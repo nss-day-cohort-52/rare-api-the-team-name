@@ -75,6 +75,15 @@ class PostView(ViewSet):
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
+    @action(methods=['put'], detail=True)
+    def edit_tags(self, request, pk):
+        """Put request to is_staff"""
+
+        post = Post.objects.get(pk=pk)
+        post.tags.set(request.data)
+        post.save()
+
+        return Response({'message': 'Tags have been edited'}, status=status.HTTP_204_NO_CONTENT)
 
 class PostSerializer(serializers.ModelSerializer):
     # event_count = serializers.IntegerField(default=None)
