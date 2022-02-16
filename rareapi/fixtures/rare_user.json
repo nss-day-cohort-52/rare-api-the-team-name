@@ -7,5 +7,23 @@
             "bio": "I am a user.",
             "profile_image_url": "https://media.altpress.com/uploads/2018/07/its_always_sunny_charlie.jpg"
         }
+    },
+    {
+        "model": "rareapi.rareuser",
+        "pk": 2,
+        "fields":{
+            "user": 2,
+            "bio": "I am an admin.",
+            "profile_image_url": "https://media.altpress.com/uploads/2018/07/its_always_sunny_charlie.jpg"
+        }
+    },
+    {
+        "model": "rareapi.rareuser",
+        "pk": 3,
+        "fields":{
+            "user": 3,
+            "bio": "I am a user who wants to be an admin.",
+            "profile_image_url": "https://media.altpress.com/uploads/2018/07/its_always_sunny_charlie.jpg"
+        }
     }
 ]

@@ -18,7 +18,7 @@ class PostView(ViewSet):
             return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
 
     def list(self, request):
-        posts = Post.objects.all()
+        posts = Post.objects.order_by('-publication_date')
         category = request.query_params.get('category_id', None)
         author = request.query_params.get('user_id', None)
         tag = request.query_params.get('tag_id', None)
@@ -83,7 +83,6 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = '__all__'
         depth = 3
-
 
 class CreatePostSerializer(serializers.ModelSerializer):
     class Meta:
