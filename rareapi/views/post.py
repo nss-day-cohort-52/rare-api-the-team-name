@@ -18,10 +18,19 @@ class PostView(ViewSet):
             return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
 
     def list(self, request):
-        posts = Post.objects.all()
-        category = request.query_params.get('category', None)
+        posts = Post.objects.order_by('-publication_date')
+        category = request.query_params.get('category_id', None)
+        author = request.query_params.get('user_id', None)
+        tag = request.query_params.get('tag_id', None)
+        title = request.query_params.get('q', None)
+        if title is not None:
+            posts = posts.filter(title__icontains=f"{title}")
         if category is not None:
             posts = posts.filter(category_id=category)
+        if author is not None:
+            posts = posts.filter(user_id=author)
+        if tag is not None:
+            posts = posts.filter(tags=tag)
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
@@ -75,8 +84,7 @@ class PostSerializer(serializers.ModelSerializer):
         fields = '__all__'
         depth = 3
 
-
 class CreatePostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ['title', 'publication_date', 'image_url', 'content', 'approved', 'tags']
+        fields = ['title', 'publication_date', 'image_url', 'content', 'approved', 'tags', 'category']
