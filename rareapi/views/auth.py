@@ -23,11 +23,15 @@ def login_user(request):
 
     # If authentication was successful, respond with their token
     if authenticated_user is not None:
+        rare_user = RareUser.objects.get(user = authenticated_user)
         token = Token.objects.get(user=authenticated_user)
-        data = {
-            'valid': True,
-            'token': token.key
-        }
+        if rare_user.active is True:
+            data = {
+                'valid': True,
+                'token': token.key
+            }
+        else: 
+            data = { 'valid': False }
         return Response(data)
     else:
         # Bad login details were provided. So we can't log the user in.
