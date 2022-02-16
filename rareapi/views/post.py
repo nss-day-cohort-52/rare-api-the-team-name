@@ -83,6 +83,16 @@ class PostView(ViewSet):
         return Response(serializer.data)
 
     @action(methods=['put'], detail=True)
+    def edit_tags(self, request, pk):
+        """Put request to is_staff"""
+
+        post = Post.objects.get(pk=pk)
+        post.tags.set(request.data)
+        post.save()
+
+        return Response({'message': 'Tags have been edited'}, status=status.HTTP_204_NO_CONTENT)
+    
+    @action(methods=['put'], detail=True)
     def approve(self, request, pk):
         post = Post.objects.get(pk=pk)
         post.approved = True
