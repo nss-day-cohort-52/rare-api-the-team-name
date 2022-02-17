@@ -1,6 +1,7 @@
 """View module for handling requests about user"""
+from datetime import datetime
 from django.contrib.auth.models import User
-from rareapi.models import RareUser
+from rareapi.models import RareUser, Subscription
 from rest_framework import serializers, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -58,6 +59,14 @@ class RareUserView(ViewSet):
 
         follower = RareUser.objects.get(pk=request.auth.user.id)
         author = RareUser.objects.get(pk=pk)
+
+        # subscription = Subscription.objects.get(
+        #     author=author, follower=follower)
+        # subscription.ended_on = datetime.date
+        # subscription.save()
+
+        # subscription.delete()
+
         follower.following.remove(author)
 
         return Response({'message': 'Subscription deleted'}, status=status.HTTP_204_NO_CONTENT)
