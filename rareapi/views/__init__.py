@@ -4,3 +4,4 @@ from .rare_user import RareUserView
 from .categories import CategoryView
 from .post import PostView
 from .tag import TagView
+from .reactions import ReactionView
