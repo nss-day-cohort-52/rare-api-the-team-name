@@ -1,3 +1,6 @@
+from django.core.files.base import ContentFile
+import uuid
+import base64
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
@@ -56,11 +59,18 @@ def register_user(request):
         last_name=request.data['last_name'],
         email=request.data['email']
     )
-
+    
+    # making image upload work
+    format, imgstr = request.data["profile_pic"].split(';base64,')
+    ext = format.split('/')[-1]
+    data = ContentFile(base64.b64decode(imgstr), name=f'{request.data["username"]}-{uuid.uuid4()}.{ext}')
+    
+    # Save the data to the database with the save() method
     # Now save the extra info in the rareapi_rare_user table
     rare_user = RareUser.objects.create(
         bio=request.data['bio'],
-        user=new_user
+        user=new_user,
+        profile_pic=data
     )
 
     # Use the REST Framework's token generator on the new user account
