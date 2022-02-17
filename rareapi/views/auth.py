@@ -59,16 +59,7 @@ def register_user(request):
         last_name=request.data['last_name']
     )
     
-    # Create a new instance of the game picture model you defined
-    # Example: game_picture = GamePicture()
-    
-    # rare_user.base64 = request.data['profile_pic']
-    
-    # Give the image property of your game picture instance a value
-    # For example, if you named your property `action_pic`, then
-    # you would specify the following code:
-    #
-    #       game_picture.action_pic = data
+    # making image upload work
     format, imgstr = request.data["profile_pic"].split(';base64,')
     ext = format.split('/')[-1]
     data = ContentFile(base64.b64decode(imgstr), name=f'{request.data["username"]}-{uuid.uuid4()}.{ext}')
