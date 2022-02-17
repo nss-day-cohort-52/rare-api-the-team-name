@@ -6,16 +6,15 @@ from rareapi.models import DeactivationQueue, RareUser
 
 
 class DeactivationQueueView(ViewSet):
-    def retrieve(self, request, pk):
+    def list(self, request):
         """handles the GET for single deactivationQueues"""
-        try:
-            admin = RareUser.objects.get(pk = pk)
-            
-            deactivation_queue = DeactivationQueue.objects.get(admin=admin)
-            serializer = DeactivationQueueSerializer(deactivation_queue)
-            return Response(serializer.data)
-        except DeactivationQueue.DoesNotExist as ex:
-            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
+        admin_id = request.query_params.get('adminId', None)
+        admin = RareUser.objects.get(pk=admin_id)
+
+        deactivation_queue = DeactivationQueue.objects.filter(admin=admin)
+        serializer = DeactivationQueueSerializer(deactivation_queue, many=True)
+        return Response(serializer.data)
 
     def create(self, request):
         requester = RareUser.objects.get(user=request.auth.user)

@@ -1,8 +1,5 @@
-import re
-from django.db.models import Count, Q
 from django.forms import ValidationError
 from rareapi.models import Post, RareUser
-from django.contrib.auth.models import User
 from rareapi.views.rare_user import RareUserSerializer
 from rest_framework import serializers, status
 from rest_framework.decorators import action

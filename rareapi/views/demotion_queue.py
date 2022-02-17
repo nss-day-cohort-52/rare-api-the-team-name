@@ -6,16 +6,15 @@ from rareapi.models import DemotionQueue, RareUser
 
 
 class DemotionQueueView(ViewSet):
-    def retrieve(self, request, pk):
+    def list(self, request):
         """handles the GET for single demotionQueues"""
-        try:
-            admin = RareUser.objects.get(pk=pk)
 
-            demotion_queue = DemotionQueue.objects.get(admin=admin)
-            serializer = DemotionQueueSerializer(demotion_queue)
-            return Response(serializer.data)
-        except DemotionQueue.DoesNotExist as ex:
-            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+        admin_id = request.query_params.get('adminId', None)
+        admin = RareUser.objects.get(pk=admin_id)
+
+        demotion_queue = DemotionQueue.objects.filter(admin=admin)
+        serializer = DemotionQueueSerializer(demotion_queue, many=True)
+        return Response(serializer.data)
 
     def create(self, request):
         requester = RareUser.objects.get(user=request.auth.user)
