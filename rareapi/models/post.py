@@ -1,5 +1,7 @@
 from django.db import models
 
+from rareapi.models.post_reaction import PostReaction
+
 
 class Post(models.Model):
     user = models.ForeignKey("RareUser", on_delete=models.CASCADE)
@@ -10,3 +12,8 @@ class Post(models.Model):
     content = models.TextField()
     approved = models.BooleanField(default=False)
     tags = models.ManyToManyField("Tag", through="PostTag", related_name="tags")
+    
+    # @property
+    # def user_reactions(self):
+        
+    #     reactions = PostReaction.objects.filter(post=self, user=request.auth.user)
