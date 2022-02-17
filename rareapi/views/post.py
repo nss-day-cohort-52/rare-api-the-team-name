@@ -80,16 +80,6 @@ class PostView(ViewSet):
         
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
-    
-    @action(methods=['post'], detail=False)
-    def post_reaction(self, request):
-        """Only get posts whose authors are associated with the current user's subscriptions"""
-
-        user = RareUser.objects.get(pk=request.auth.user.id)
-
-        post = Post.objects.get(pk=request.post.id)
-        
-
         
     @action(methods=['put'], detail=True)
     def edit_tags(self, request, pk):
@@ -120,7 +110,7 @@ class PostSerializer(serializers.ModelSerializer):
     # user_event_count = serializers.IntegerField(default=None)
     class Meta:
         model = Post
-        fields = '__all__'
+        fields = ['id', 'postreaction_set', 'title', 'publication_date', 'image_url', 'content', 'tags', 'category', 'user']
         depth = 3
 
 class CreatePostSerializer(serializers.ModelSerializer):
