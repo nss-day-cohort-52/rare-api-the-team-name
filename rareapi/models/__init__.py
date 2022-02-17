@@ -5,3 +5,5 @@ from .post import Post
 from .rare_user import RareUser
 from .subscription import Subscription
 from .tag import Tag
+from .deactivation_queue import DeactivationQueue
+from .demotion_queue import DemotionQueue
