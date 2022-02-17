@@ -1,5 +1,3 @@
-import re
-from django.db.models import Count, Q
 from django.forms import ValidationError
 from rareapi.models import Post, RareUser
 from django.contrib.auth.models import User

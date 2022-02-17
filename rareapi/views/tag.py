@@ -16,7 +16,7 @@ class TagView(ViewSet):
         
 
     def list(self, request):
-        tags = Tag.objects.all()
+        tags = Tag.objects.order_by('label')
         label = request.query_params.get('q', None)
         if label is not None:
             tags = tags.filter(label=label)
