@@ -13,7 +13,7 @@ class Post(models.Model):
     approved = models.BooleanField(default=False)
     tags = models.ManyToManyField("Tag", through="PostTag", related_name="tags")
     
-    # @property
-    # def user_reactions(self):
+    @property
+    def user_reactions(self):
         
-    #     reactions = PostReaction.objects.filter(post=self, user=request.auth.user)
+        reactions = PostReaction.objects.filter(post=self, user=request.auth.user)

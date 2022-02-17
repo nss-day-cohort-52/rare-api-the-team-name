@@ -2,29 +2,29 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
 from django.forms import ValidationError
-from rareapi.models import Reaction
+from rareapi.models import PostReaction
 
 
-class ReactionView(ViewSet):
+class PostReactionView(ViewSet):
     def list (self, request):
-        """handles the GET all for reactions"""
-        reactions = Reaction.objects.order_by('label')
-        serializer = ReactionSerializer(reactions, many=True)
+        """handles the GET all for Postreactions"""
+        postReactions = PostReaction.objects.all()
+        serializer = PostReactionSerializer(postReactions, many=True)
         return Response(serializer.data)
 
     def retrieve(self, request, pk):
-        """handles the GET for single reactions"""
+        """handles the GET for single Postreactions"""
         try:
-            reaction = Reaction.objects.get(pk=pk)
-            serializer = ReactionSerializer(reaction)
+            postReactions = PostReaction.objects.get(pk=pk)
+            serializer = PostReactionSerializer(postReactions)
             return Response(serializer.data)
-        except Reaction.DoesNotExist as ex:
+        except PostReaction.DoesNotExist as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
         
         try:
-            serializer = CreateReactionSerializer(data=request.data)
+            serializer = CreatePostReactionSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -33,8 +33,8 @@ class ReactionView(ViewSet):
 
     def update(self, request, pk):
         try:
-            reaction = Reaction.objects.get(pk=pk)
-            serializer = CreateReactionSerializer(reaction, data=request.data)
+            postReactions = PostReaction.objects.get(pk=pk)
+            serializer = CreatePostReactionSerializer(postReactions, data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(None, status=status.HTTP_204_NO_CONTENT)
@@ -42,17 +42,16 @@ class ReactionView(ViewSet):
             return Response({'message': ex.args[0]}, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk):
-        reaction = Reaction.objects.get(pk=pk)
-        reaction.delete()
+        postReactions = PostReaction.objects.get(pk=pk)
+        postReactions.delete()
         return Response(None, status=status.HTTP_204_NO_CONTENT)
 
-class ReactionSerializer(serializers.ModelSerializer):
+class PostReactionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Reaction
-        fields = ('id', 'label', 'image_url')
+        model = PostReaction
+        fields = ('id', 'user', 'post', 'reaction')
 
-class CreateReactionSerializer(serializers.ModelSerializer):
+class CreatePostReactionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Reaction
-        fields = ('id', 'label', 'image_url')
-        
+        model = PostReaction
+        fields = ('user', 'post', 'reaction')

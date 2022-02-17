@@ -5,3 +5,4 @@ from .categories import CategoryView
 from .post import PostView
 from .tag import TagView
 from .reactions import ReactionView
+from .post_reactions import PostReactionView

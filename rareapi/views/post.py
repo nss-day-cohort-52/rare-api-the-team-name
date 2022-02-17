@@ -3,6 +3,7 @@ from django.db.models import Count, Q
 from django.forms import ValidationError
 from rareapi.models import Post, RareUser
 from django.contrib.auth.models import User
+from rareapi.models.post_reaction import PostReaction
 from rareapi.views.rare_user import RareUserSerializer
 from rest_framework import serializers, status
 from rest_framework.decorators import action
@@ -81,7 +82,17 @@ class PostView(ViewSet):
         
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
+    
+    @action(methods=['post'], detail=False)
+    def post_reaction(self, request):
+        """Only get posts whose authors are associated with the current user's subscriptions"""
 
+        user = RareUser.objects.get(pk=request.auth.user.id)
+
+        post = Post.objects.get(pk=request.post.id)
+        
+
+        
     @action(methods=['put'], detail=True)
     def edit_tags(self, request, pk):
         """Put request to is_staff"""
