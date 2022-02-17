@@ -1,4 +1,3 @@
-import uuid
 from django.db.models import Count, Q
 from django.forms import ValidationError
 from rareapi.models import Post, RareUser
@@ -41,20 +40,6 @@ class PostView(ViewSet):
 
     def create(self, request):
         user = RareUser.objects.get(user=request.auth.user)
-        # Create a new instance of the game picture model you defined
-        # Example: game_picture = GamePicture()
-
-        format, imgstr = request.data["game_image"].split(';base64,')
-        ext = format.split('/')[-1]
-        data = ContentFile(base64.b64decode(imgstr), name=f'{request.data["game_id"]}-{uuid.uuid4()}.{ext}')
-
-        # Give the image property of your game picture instance a value
-        # For example, if you named your property `action_pic`, then
-        # you would specify the following code:
-        #
-        #       game_picture.action_pic = data
-
-        # Save the data to the database with the save() method
         try:
             serializer = CreatePostSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)

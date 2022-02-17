@@ -1,3 +1,6 @@
+from django.core.files.base import ContentFile
+import uuid
+import base64
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
@@ -55,11 +58,27 @@ def register_user(request):
         first_name=request.data['first_name'],
         last_name=request.data['last_name']
     )
-
+    
+    # Create a new instance of the game picture model you defined
+    # Example: game_picture = GamePicture()
+    
+    # rare_user.base64 = request.data['profile_pic']
+    
+    # Give the image property of your game picture instance a value
+    # For example, if you named your property `action_pic`, then
+    # you would specify the following code:
+    #
+    #       game_picture.action_pic = data
+    format, imgstr = request.data["profile_pic"].split(';base64,')
+    ext = format.split('/')[-1]
+    data = ContentFile(base64.b64decode(imgstr), name=f'{request.data["username"]}-{uuid.uuid4()}.{ext}')
+    
+    # Save the data to the database with the save() method
     # Now save the extra info in the rareapi_rare_user table
     rare_user = RareUser.objects.create(
         bio=request.data['bio'],
-        user=new_user
+        user=new_user,
+        profile_pic=data
     )
 
     # Use the REST Framework's token generator on the new user account
