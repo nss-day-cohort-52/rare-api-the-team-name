@@ -1,0 +1,10 @@
+[
+    {
+        "model": "rareapi.reaction",
+        "pk":  1,
+        "fields":{
+            "label": "Hype Machine",
+            "image_url": "https://data.whicdn.com/images/330413337/original.jpg?t=1557960288"
+        }
+    }
+]

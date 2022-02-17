@@ -5,3 +5,5 @@ from .post import Post
 from .rare_user import RareUser
 from .subscription import Subscription
 from .tag import Tag
+from .reaction import Reaction
+from .post_reaction import PostReaction
