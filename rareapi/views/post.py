@@ -7,6 +7,10 @@ from rest_framework import serializers, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
+from django.core.files.base import ContentFile
+import uuid
+import base64
+
 
 
 class PostView(ViewSet):
@@ -41,13 +45,18 @@ class PostView(ViewSet):
     def create(self, request):
         user = RareUser.objects.get(user=request.auth.user)
         try:
+
             serializer = CreatePostSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
-            post = serializer.save(user=user)
+            format, imgstr = request.data["image_url"].split(';base64,')
+            ext = format.split('/')[-1]
+            imgdata = ContentFile(base64.b64decode(imgstr), name=f'{request.data["title"]}-{uuid.uuid4()}.{ext}')
+            post = serializer.save(user=user, image_url=imgdata)
             if request.auth.user.is_staff == 1:
                 post = serializer.save(approved=True)
             post.tags.set(request.data["tags"])
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+
         except ValidationError as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -116,4 +125,4 @@ class PostSerializer(serializers.ModelSerializer):
 class CreatePostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ['title', 'publication_date', 'image_url', 'content', 'tags', 'category']
+        fields = ['title', 'publication_date', 'content', 'tags', 'category']
