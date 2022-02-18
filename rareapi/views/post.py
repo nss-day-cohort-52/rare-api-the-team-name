@@ -110,7 +110,7 @@ class PostSerializer(serializers.ModelSerializer):
     # user_event_count = serializers.IntegerField(default=None)
     class Meta:
         model = Post
-        fields = ['id', 'postreaction_set', 'title', 'publication_date', 'image_url', 'content', 'tags', 'category', 'user']
+        fields = ['id', 'postreaction_set', 'title', 'publication_date', 'image_url', 'content', 'tags', 'category', 'user', 'approved']
         depth = 3
 
 class CreatePostSerializer(serializers.ModelSerializer):
