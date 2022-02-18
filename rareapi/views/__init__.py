@@ -6,4 +6,5 @@ from .demotion_queue import DemotionQueueView
 from .post import PostView
 from .rare_user import RareUserView
 from .reactions import ReactionView
+from .post_reactions import PostReactionView
 from .tag import TagView
