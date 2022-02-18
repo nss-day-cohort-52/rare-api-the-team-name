@@ -1,5 +1,7 @@
 from django.forms import ValidationError
 from rareapi.models import Post, RareUser
+from django.contrib.auth.models import User
+from rareapi.models.post_reaction import PostReaction
 from rareapi.views.rare_user import RareUserSerializer
 from rest_framework import serializers, status
 from rest_framework.decorators import action
@@ -78,7 +80,7 @@ class PostView(ViewSet):
         
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
-
+        
     @action(methods=['put'], detail=True)
     def edit_tags(self, request, pk):
         """Put request to is_staff"""
@@ -108,7 +110,7 @@ class PostSerializer(serializers.ModelSerializer):
     # user_event_count = serializers.IntegerField(default=None)
     class Meta:
         model = Post
-        fields = '__all__'
+        fields = ['id', 'postreaction_set', 'title', 'publication_date', 'image_url', 'content', 'tags', 'category', 'user']
         depth = 3
 
 class CreatePostSerializer(serializers.ModelSerializer):

@@ -19,9 +19,10 @@ from django.contrib import admin
 from django.urls import path
 from rest_framework import routers
 from rareapi.views import (CategoryView, CommentView, DeactivationQueueView,
-                           DemotionQueueView, PostView, RareUserView,
-                           ReactionView, TagView, login_user, register_user)
-
+                           DemotionQueueView, PostReactionView, PostView,
+                           RareUserView, ReactionView, TagView, login_user,
+                           register_user)
+from rest_framework import routers
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'users', RareUserView, 'rare user')
@@ -32,6 +33,7 @@ router.register(r'comments', CommentView, 'comment')
 router.register(r'deactivations', DeactivationQueueView, 'deactivation')
 router.register(r'demotions', DemotionQueueView, 'demotion')
 router.register(r'reactions', ReactionView, 'reaction')
+router.register(r'postreactions', PostReactionView, 'postreaction')
 
 urlpatterns = [
     path('register', register_user),
