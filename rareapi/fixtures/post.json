@@ -1,14 +1,14 @@
 [
     {
         "model": "rareapi.post",
-        "pk": 18,
+        "pk": 188,
         "fields":{
             "user": 1,
             "category": 2,
-            "title": "Jamaica’s first Olympic skier",
-            "content": "Benjamin Alexander is born in the UK in 1983. He has a Jamaican father and in finance. Then, he becomes a DJ. He is very successful in his job. Alexander starts skiing six years ago. He can ski well. This month, he qualifies for the Olympic Games in Beijing, China. This means that he is fast enough to ski with the best skiers in the world. He is not the best. He is on the 4722nd place in the world. He is happy that he can go to the Olympics.",
+            "title": "test title",
+            "content": "test content",
             "publication_date": "2021-01-14",
-            "image_url": "https://www.newsinlevels.com/wp-content/uploads/2022/01/Depositphotos_3196834_S-200x100.jpg?ezimgfmt=ng:webp/ngcb1",
+            "image_url": "",
             "approved": true
         }
     }
