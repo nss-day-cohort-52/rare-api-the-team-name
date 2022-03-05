@@ -1,7 +1,7 @@
 [
     {
         "model": "rareapi.post",
-        "pk": 188,
+        "pk": 1,
         "fields":{
             "user": 1,
             "category": 2,
